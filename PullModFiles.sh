@@ -7,6 +7,8 @@ MODS_ROOT="/c/Program Files (x86)/Steam/steamapps/common/HatinTime/HatinTimeGame
 cd `dirname $0`
 echo "Working dir: `pwd`"
 
+export PATH=$PATH:`dirname $0`/RepoTools
+
 rm -rf "mcu8_mods_BH" "mcu8_maps_SpaceshipEx"
 
 echo "Copying HubSwapper files..."
@@ -25,6 +27,12 @@ rm -rf mcu8_*/CompiledScripts
 echo "Removing Shadercache..."
 rm -rf mcu8_*/Shadercache
 
-echo "OK!"
+echo "Packing release archives..."
 
+rm mcu8_*.zip
+zip.exe -r mcu8_mods_BH.zip mcu8_mods_BH/*
+zip.exe -r mcu8_maps_SpaceshipEx.zip mcu8_maps_SpaceshipEx/*
+zip.exe -r Examples.zip Examples/*
+
+echo "OK!"
 git add --all && git status && git commit
