@@ -15,8 +15,12 @@ cp -r "$MODS_ROOT/mcu8_mods_BH" "mcu8_mods_BH"
 echo "Copying SpaceshipEX files..."
 cp -r "$MODS_ROOT/mcu8_maps_SpaceshipEx" "mcu8_maps_SpaceshipEx"
 
+
 echo "Removing CookedPC..."
 rm -rf mcu8_*/CookedPC
+
+echo "Removing CompiledScripts..."
+rm -rf mcu8_*/CompiledScripts
 
 echo "Removing Shadercache..."
 rm -rf mcu8_*/Shadercache
