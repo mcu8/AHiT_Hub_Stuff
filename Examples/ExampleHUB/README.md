@@ -14,7 +14,8 @@
      I.   BEFORE YOU START **PLEASE READ**
     =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
      0. First, remove the steam version of the HUB Swapper
-     1. Download the repository and move the "mcu8_mods_BH" folder into your "Mods" folder
+     1. Download https://github.com/mcu8/AHiT_Hub_Stuff/tree/main/Releases/mcu8_mods_BH.zip
+        and extract the "mcu8_mods_BH" folder from the archive into your "Mods" folder
      2. Launch Mod Manager, click on the "HUB Swapper" mod icon, then [</>] and 
         click "Compile scripts" button, wait for it to finish...
 
