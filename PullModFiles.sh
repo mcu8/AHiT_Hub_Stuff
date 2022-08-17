@@ -29,10 +29,12 @@ rm -rf mcu8_*/Shadercache
 
 echo "Packing release archives..."
 
-rm mcu8_*.zip
-zip.exe -r mcu8_mods_BH.zip mcu8_mods_BH/*
-zip.exe -r mcu8_maps_SpaceshipEx.zip mcu8_maps_SpaceshipEx/*
-zip.exe -r Examples.zip Examples/*
+mkdir -p Releases
+
+rm Releases/mcu8_*.zip
+zip.exe -r Releases/mcu8_mods_BH.zip mcu8_mods_BH/*
+zip.exe -r Releases/mcu8_maps_SpaceshipEx.zip mcu8_maps_SpaceshipEx/*
+zip.exe -r Releases/Examples.zip Examples/*
 
 echo "OK!"
 git add --all && git status && git commit
