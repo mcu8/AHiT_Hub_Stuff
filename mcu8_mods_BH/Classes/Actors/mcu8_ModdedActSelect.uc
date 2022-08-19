@@ -26,6 +26,8 @@ var() GameModInfo BaseGameMod;
 
 var() Color TextColor;
 
+var() int UpdateTicks;
+
 simulated event PostBeginPlay()
 {
 	local Rotator r;
@@ -61,23 +63,27 @@ simulated event Tick(float d)
 	//Super.Tick(d);
 
     //TextRenderComponent.TextColor = LinearColorToColor(PlayerState.PlayerColor);
-	TextRenderComponentLine1.Text = ModNameLine1;
-	TextRenderComponentLine1.TextColor = TextColor;
-	TextRenderComponentLine1.SetHidden(false);
-	ReattachComponent(TextRenderComponentLine1);
-	TextRenderComponentLine1.SetRotation(Rotation);
+	if (UpdateTicks > 0)
+	{
+		TextRenderComponentLine1.Text = ModNameLine1;
+		TextRenderComponentLine1.TextColor = TextColor;
+		TextRenderComponentLine1.SetHidden(false);
+		ReattachComponent(TextRenderComponentLine1);
+		TextRenderComponentLine1.SetRotation(Rotation);
 
-	TextRenderComponentLine2.Text = ModNameLine2;
-	TextRenderComponentLine2.TextColor = TextColor;
-	TextRenderComponentLine2.SetHidden(false);
-	ReattachComponent(TextRenderComponentLine2);
-	TextRenderComponentLine2.SetRotation(Rotation);
+		TextRenderComponentLine2.Text = ModNameLine2;
+		TextRenderComponentLine2.TextColor = TextColor;
+		TextRenderComponentLine2.SetHidden(false);
+		ReattachComponent(TextRenderComponentLine2);
+		TextRenderComponentLine2.SetRotation(Rotation);
 
-	TextRenderComponentLine3.Text = ModNameLine3;
-	TextRenderComponentLine3.TextColor = TextColor;
-	TextRenderComponentLine3.SetHidden(false);
-	ReattachComponent(TextRenderComponentLine3);
-	TextRenderComponentLine3.SetRotation(Rotation);
+		TextRenderComponentLine3.Text = ModNameLine3;
+		TextRenderComponentLine3.TextColor = TextColor;
+		TextRenderComponentLine3.SetHidden(false);
+		ReattachComponent(TextRenderComponentLine3);
+		TextRenderComponentLine3.SetRotation(Rotation);
+		UpdateTicks -= 1;
+	}
 
 	if (BounceAnimation >= 0)
 		UpdateBounceAnimation(d);
@@ -576,6 +582,8 @@ defaultproperties
 	End Object
 	TextRenderComponentLine3 = TextRenderComponent2;
 	Components.Add(TextRenderComponent2)
+
+	UpdateTicks = 100;
 
 	TextColor=(R=255,G=255,B=255)
 }

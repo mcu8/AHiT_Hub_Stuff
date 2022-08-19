@@ -30,6 +30,8 @@ const PressButtonTime = 0.52;
 
 var() SoundCue Boop;
 
+var() int UpdateTicks;
+
 simulated event PostBeginPlay()
 {
 	Super.PostBeginPlay();
@@ -117,23 +119,27 @@ simulated event Tick(float d)
 {
 	Super.Tick(d);
 
-	TextRenderComponentLine1.Text = ModNameLine1;
-	TextRenderComponentLine1.TextColor = TextColor;
-	TextRenderComponentLine1.SetHidden(false);
-	ReattachComponent(TextRenderComponentLine1);
-	TextRenderComponentLine1.SetRotation(Rotation);
+	if (UpdateTicks > 0)
+	{
+		TextRenderComponentLine1.Text = ModNameLine1;
+		TextRenderComponentLine1.TextColor = TextColor;
+		TextRenderComponentLine1.SetHidden(false);
+		ReattachComponent(TextRenderComponentLine1);
+		TextRenderComponentLine1.SetRotation(Rotation);
 
-	TextRenderComponentLine2.Text = ModNameLine2;
-	TextRenderComponentLine2.SetHidden(false);
-	TextRenderComponentLine2.TextColor = TextColor;
-	ReattachComponent(TextRenderComponentLine2);
-	TextRenderComponentLine2.SetRotation(Rotation);
+		TextRenderComponentLine2.Text = ModNameLine2;
+		TextRenderComponentLine2.SetHidden(false);
+		TextRenderComponentLine2.TextColor = TextColor;
+		ReattachComponent(TextRenderComponentLine2);
+		TextRenderComponentLine2.SetRotation(Rotation);
 
-	TextRenderComponentLine3.Text = ModNameLine3;
-	TextRenderComponentLine3.TextColor = TextColor;
-	TextRenderComponentLine3.SetHidden(false);
-	ReattachComponent(TextRenderComponentLine3);
-	TextRenderComponentLine3.SetRotation(Rotation);
+		TextRenderComponentLine3.Text = ModNameLine3;
+		TextRenderComponentLine3.TextColor = TextColor;
+		TextRenderComponentLine3.SetHidden(false);
+		ReattachComponent(TextRenderComponentLine3);
+		TextRenderComponentLine3.SetRotation(Rotation);
+		UpdateTicks -= 1;
+	}
 
 	if (ObjectiveActor == None)
 	{
@@ -218,6 +224,8 @@ defaultproperties
 	Mesh2=Model1
 	Components.Add(Model1)
 	TextColor=(R=255,G=255,B=255)
+
+	UpdateTicks = 100;
 
 	Boop = SoundCue'HatinTime_SFX_Spaceship.AreaMonitor_ActivateUnlock_cue'
 

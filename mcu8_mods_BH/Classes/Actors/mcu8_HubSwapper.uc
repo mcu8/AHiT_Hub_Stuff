@@ -17,9 +17,15 @@ var() Hat_TextRenderComponent TextRenderComponentLine1;
 var() Hat_TextRenderComponent TextRenderComponentLine2;
 var() Hat_TextRenderComponent TextRenderComponentLine3;
 
+var() Hat_TextRenderComponent TextRenderComponentLine1_Shadow;
+var() Hat_TextRenderComponent TextRenderComponentLine2_Shadow;
+var() Hat_TextRenderComponent TextRenderComponentLine3_Shadow;
+
 var transient Hat_InteractPoint InteractPoint;
 
 var() Color TextColor;
+
+var() int UpdateTicks;
 
 const PressButtonTime = 0.52;
 
@@ -66,23 +72,43 @@ simulated event Tick(float d)
 {
 	Super.Tick(d);
 
-	TextRenderComponentLine1.Text = ModNameLine1;
-	TextRenderComponentLine1.TextColor = TextColor;
-	TextRenderComponentLine1.SetHidden(false);
-	ReattachComponent(TextRenderComponentLine1);
-	TextRenderComponentLine1.SetRotation(Rotation);
+	if (UpdateTicks > 0)
+	{
+		TextRenderComponentLine1.Text = ModNameLine1;
+		TextRenderComponentLine1.TextColor = TextColor;
+		TextRenderComponentLine1.SetHidden(false);
+		ReattachComponent(TextRenderComponentLine1);
+		TextRenderComponentLine1.SetRotation(Rotation);
 
-	TextRenderComponentLine2.Text = ModNameLine2;
-	TextRenderComponentLine2.SetHidden(false);
-	TextRenderComponentLine2.TextColor = TextColor;
-	ReattachComponent(TextRenderComponentLine2);
-	TextRenderComponentLine2.SetRotation(Rotation);
+		TextRenderComponentLine2.Text = ModNameLine2;
+		TextRenderComponentLine2.SetHidden(false);
+		TextRenderComponentLine2.TextColor = TextColor;
+		ReattachComponent(TextRenderComponentLine2);
+		TextRenderComponentLine2.SetRotation(Rotation);
 
-	TextRenderComponentLine3.Text = ModNameLine3;
-	TextRenderComponentLine3.TextColor = TextColor;
-	TextRenderComponentLine3.SetHidden(false);
-	ReattachComponent(TextRenderComponentLine3);
-	TextRenderComponentLine3.SetRotation(Rotation);
+		TextRenderComponentLine3.Text = ModNameLine3;
+		TextRenderComponentLine3.TextColor = TextColor;
+		TextRenderComponentLine3.SetHidden(false);
+		ReattachComponent(TextRenderComponentLine3);
+		TextRenderComponentLine3.SetRotation(Rotation);
+
+		
+		TextRenderComponentLine1_Shadow.Text = ModNameLine1;
+		TextRenderComponentLine1_Shadow.SetHidden(false);
+		ReattachComponent(TextRenderComponentLine1_Shadow);
+		TextRenderComponentLine1_Shadow.SetRotation(Rotation);
+
+		TextRenderComponentLine2_Shadow.Text = ModNameLine2;
+		TextRenderComponentLine2_Shadow.SetHidden(false);
+		ReattachComponent(TextRenderComponentLine2_Shadow);
+		TextRenderComponentLine2_Shadow.SetRotation(Rotation);
+
+		TextRenderComponentLine3_Shadow.Text = ModNameLine3;
+		TextRenderComponentLine3_Shadow.SetHidden(false);
+		ReattachComponent(TextRenderComponentLine3_Shadow);
+		TextRenderComponentLine3_Shadow.SetRotation(Rotation);
+		UpdateTicks -= 1;
+	}
 }
 
 defaultproperties 
@@ -98,10 +124,14 @@ defaultproperties
 	End Object
 	Components.Add(MyLightEnvironment2)
 
-	Begin Object Class=Hat_TextRenderComponent Name=TextRenderComponent0
+
+
+
+
+	Begin Object Class=mcu8_TextRenderComponent_OutlineText Name=TextRenderComponent0
 		Translation=(Z=130)
 		Size = 0.8f
-		TextLimit = 255
+		TextLimit = 150
 		HiddenGame=false
 		TextColor=(R=255,G=255,B=255)
 		AbsoluteRotation=true
@@ -110,10 +140,10 @@ defaultproperties
 	TextRenderComponentLine1 = TextRenderComponent0;
 	Components.Add(TextRenderComponent0)
 
-	Begin Object Class=Hat_TextRenderComponent Name=TextRenderComponent1
+	Begin Object Class=mcu8_TextRenderComponent_OutlineText Name=TextRenderComponent1
 		Translation=(Z=145)
 		Size = 0.8f
-		TextLimit = 255
+		TextLimit = 150
 		HiddenGame=false
 		TextColor=(R=255,G=255,B=255)
 		AbsoluteRotation=true
@@ -122,10 +152,10 @@ defaultproperties
 	TextRenderComponentLine2 = TextRenderComponent1;
 	Components.Add(TextRenderComponent1)
 
-	Begin Object Class=Hat_TextRenderComponent Name=TextRenderComponent2
+	Begin Object Class=mcu8_TextRenderComponent_OutlineText Name=TextRenderComponent2
 		Translation=(Z=160)
 		Size = 0.8f
-		TextLimit = 255
+		TextLimit = 150
 		HiddenGame=false
 		TextColor=(R=255,G=255,B=255)
 		AbsoluteRotation=true
@@ -133,7 +163,49 @@ defaultproperties
 	End Object
 	TextRenderComponentLine3 = TextRenderComponent2;
 	Components.Add(TextRenderComponent2)
-	
+
+
+
+	Begin Object Class=mcu8_TextRenderComponent_OutlineText Name=TextRenderComponent0_Shadow
+		Translation=(Z=130, X=-0.1, Y=-0.1)
+		Size = 0.8f
+		TextLimit = 150
+		HiddenGame=false
+		TextColor=(R=0,G=0,B=0)
+		AbsoluteRotation=true
+		CastShadow = false
+		Font=Font'mcu8_content_hubswapper.CurseCasualOutline_Shadow'
+	End Object
+	TextRenderComponentLine1_Shadow = TextRenderComponent0_Shadow;
+	Components.Add(TextRenderComponent0_Shadow)
+
+	Begin Object Class=mcu8_TextRenderComponent_OutlineText Name=TextRenderComponent1_Shadow
+		Translation=(Z=145, X=-0.1, Y=-0.1)
+		Size = 0.8f
+		TextLimit = 150
+		HiddenGame=false
+		TextColor=(R=0,G=0,B=0)
+		AbsoluteRotation=true
+		CastShadow = false
+		Font=Font'mcu8_content_hubswapper.CurseCasualOutline_Shadow'
+	End Object
+	TextRenderComponentLine2_Shadow = TextRenderComponent1_Shadow;
+	Components.Add(TextRenderComponent1_Shadow)
+
+	Begin Object Class=mcu8_TextRenderComponent_OutlineText Name=TextRenderComponent2_Shadow
+		Translation=(Z=160, X=-0.1, Y=-0.1)
+		Size = 0.8f
+		TextLimit = 150
+		HiddenGame=false
+		TextColor=(R=0,G=0,B=0)
+		AbsoluteRotation=true
+		CastShadow = false
+		Font=Font'mcu8_content_hubswapper.CurseCasualOutline_Shadow'
+	End Object
+	TextRenderComponentLine3_Shadow = TextRenderComponent2_Shadow;
+	Components.Add(TextRenderComponent2_Shadow)
+
+
 	Begin Object Class=StaticMeshComponent Name=Model0
 		Translation=(Z=40,X=-18)
 		StaticMesh=StaticMesh'HatInTime_Levels_Science_H.models.science_train_front_red_button'
@@ -184,6 +256,8 @@ defaultproperties
 	ModNameLine3 = "Change the";
 	ModNameLine2 = "current";
 	ModNameLine1 = "HUB map";
+
+	UpdateTicks = 100;
 
 	Boop = SoundCue'HatinTime_SFX_Spaceship.AreaMonitor_ActivateUnlock_cue'
 

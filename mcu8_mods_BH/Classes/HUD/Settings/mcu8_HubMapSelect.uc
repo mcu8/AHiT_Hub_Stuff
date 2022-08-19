@@ -299,7 +299,7 @@ function OnOpenHUD(HUD H, optional String command)
 	
 	CreateBackgroundParticle(H);
 	MenuFadeIn = 0;
-	NoModsLocalizedText = "No HUB maps detected! Install some HUB mods from the Steam Workshop!";
+	NoModsLocalizedText = "No custom HUB maps detected! Install some HUB mods from the Steam Workshop!";
 	
 	DownloadingModText = class'Hat_Localizer'.static.GetMenu("Modding", "DownloadingMod");
 	ModCreatedByText = class'Hat_Localizer'.static.GetMenu("Modding", "ModCreatedBy");
@@ -506,13 +506,20 @@ function bool Tick(HUD H, float d)
 			if (PreviewTime >= 4.1 && prev < 4.1 && ModListMode == 2)
 			{
 				PlayOwnerSound(H, CreatorDLCChangeChannel);
-				PreviewLogo = class'GameMod'.static.GetModIcon(PreviewMod, 'Logo');
-				PreviewSplashArt = class'GameMod'.static.GetModIcon(PreviewMod, 'SplashArt');
-				PreviewBackgroundArt = class'GameMod'.static.GetModIcon(PreviewMod, 'Background');
-				PreviewTitlecard = class'GameMod'.static.GetModIcon(PreviewMod, 'Titlecard');
-				if (PreviewInstance != None && PreviewBackgroundArt != None)
+				if (PreviewMod.Name ~= "Default HUB" && PreviewMod.Author ~= "Gears for Breakfast")
 				{
-					PreviewInstance.SetTextureParameterValue('Background', PreviewBackgroundArt);
+					// todo: default hub assets
+				}
+				else
+				{
+					PreviewLogo = class'GameMod'.static.GetModIcon(PreviewMod, 'Logo');
+					PreviewSplashArt = class'GameMod'.static.GetModIcon(PreviewMod, 'SplashArt');
+					PreviewBackgroundArt = class'GameMod'.static.GetModIcon(PreviewMod, 'Background');
+					PreviewTitlecard = class'GameMod'.static.GetModIcon(PreviewMod, 'Titlecard');
+					if (PreviewInstance != None && PreviewBackgroundArt != None)
+					{
+						PreviewInstance.SetTextureParameterValue('Background', PreviewBackgroundArt);
+					}
 				}
 			}
 		}
@@ -537,7 +544,7 @@ function Texture2D GetIcon(int ModMenuTabIndex, int i, optional bool ForceUpdate
 	ModInfo = ModMenuTabs[ModMenuTabIndex].GameMods[i];
 	if (IconCooldown <= 0 || ForceUpdate)
 	{
-		r = class'GameMod'.static.GetModIcon(ModInfo);// todo: still creates a lot of little freezes
+		r = (ModInfo.Author ~= "Gears for Breakfast" && ModInfo.Name ~= "Default HUB") ? Texture2D'HatInTime_Levels_Titlescreen.Textures.panorama_spaceship' : class'GameMod'.static.GetModIcon(ModInfo);// todo: still creates a lot of little freezes
 		if (r == None) r = UnloadedImage;
 		IconCooldown = 0.05;// icon loading is staggered because the game freezes if they all load at once.
 	}
@@ -724,7 +731,7 @@ function RenderGameModTileList(HUD H, float scale, float alpha)
 	}
 
 	// empty message
-	if (TabLength == 0)
+	if (TabLength <= 1)
 	{
 		if (ModMenuTabs[CurrentModMenuIndex].EmptyDisplayMode >= 0 && !Debug_HideUI)
 		{
@@ -1972,32 +1979,17 @@ function bool PreviewSelected(HUD H)
 
 function UpdatePreviewButtons(HUD H)
 {
-	local Hat_ChapterInfo ChapterInfo;
 	local bool AllowPlay;
-	
-	ChapterInfo = None;
+
 	AllowPlay = PreviewMod.IsSubscribed && !PreviewMod.IsDownloading && ModMenuTabs[CurrentModMenuIndex].SpecialRenderingMode != 1;
 	if (ModMenuTabs[CurrentModMenuIndex].SpecialRenderingMode == 2)
 	{
 		AllowPlay = true;
 	}
-	if (PreviewMod.ChapterInfoName != '')
-	{
-		ChapterInfo = class'Hat_ClassHelper'.static.LoadObject(class'Hat_ChapterInfo', string(PreviewMod.ChapterInfoName));
-		if (ChapterInfo != None)
-		{
-			ChapterInfo.ConditionalUpdateActList();
-			if (ChapterInfo.ChapterActInfo.Length == 0)
-			{
-				ChapterInfo = None;
-				AllowPlay = false;
-			}
-		}
-	}
-	
+
 	PreviewButtons.Length = 0;
 	
-	if (AllowPlay && (PreviewMod.FirstMap != "" || PreviewMod.ChapterInfoName != ''))
+	if (AllowPlay)
 	{
 		// If intro map present, needs to have played intro once
 		if (PreviewMod.IntroductionMap == "" || class'Hat_SaveBitHelper'.static.HasLevelBit("Mods_" $ PreviewMod.PackageName $ "_PlayedIntroOnce", 1, `GameManager.HubMapName))
@@ -2054,7 +2046,6 @@ function ExitPreview()
 
 function LoadMap(HUD H)
 {
-	local Hat_ChapterInfo ChapterInfo;
 	local bool found;
 	local string MapName;
 	local mcu8_HubConfig cfg;
@@ -2069,7 +2060,7 @@ function LoadMap(HUD H)
     {
         // Check if map contains prefix
         splitList = SplitString(Locs(_mapName), "_");
-        if (splitList[0] == "hubexmap") 
+        if (splitList[0] == "hubexmap" || _mapName ~= `GameManager.HubMapName) 
         {
 			found = true;
 			MapName = Locs(_mapName);
@@ -2087,27 +2078,15 @@ function LoadMap(HUD H)
 	SetMouseHidden(H, true);
 	`GameManager.LoadNewAct(99);
 
-	if (PreviewMod.ChapterInfoName != '')
-	{
-		ChapterInfo = class'Hat_ClassHelper'.static.LoadObject(class'Hat_ChapterInfo', string(PreviewMod.ChapterInfoName));
-		if (ChapterInfo == None)
-		{
-			`broadcast("ChapterInfo is None");
-			return;
-		}
-		class'Hat_ActSelector'.static.OpenActSelectMenuStatic(H.PlayerOwner, ChapterInfo, PreviewMod.PackageName);
-		CloseHUD(H);
-		return;
-	}
-
 	LocalPlayer(H.PlayerOwner.Player).AudioListener = None;
 
 	cfg = class'mcu8_HubConfig'.static.Load();
-	cfg.LastMap = MapName;
+	cfg.LastMap = `GameManager.HubMapName ~= MapName ? "" : MapName;
 	cfg.Save();
 
 	`GameManager.SoftChangeLevel(MapName);
-	class'GameMod'.static.SetActiveLevelMod(PreviewMod.PackageName);
+	if (PreviewMod.PackageName != "")
+		class'GameMod'.static.SetActiveLevelMod(PreviewMod.PackageName);
 }
 
 delegate OnCloseConfigMenu(HUD H, Hat_HUDElement e)
@@ -2803,6 +2782,19 @@ function BuildModList_Levels(HUD H)
 	local Array<String> splitList;
 	local bool found;
 
+	// default hub
+	local GameModInfo dh;
+	dh.Name = "Default HUB";
+	dh.Description = "Just a default A Hat in Time hub";
+	dh.Version = "1.0.0";
+	dh.Author = "Gears for Breakfast";
+	dh.IsMap = true;
+	dh.IsSubscribed = true;
+	dh.IsDownloading = false;
+	dh.IsEnabled = true;
+	dh.MapNames.AddItem(`GameManager.HubMapName);
+
+
 	ModList = class'GameMod'.static.GetModList();
 	
 	// HUBs
@@ -2811,6 +2803,8 @@ function BuildModList_Levels(HUD H)
 	NewModMenu.Background = MaterialInstanceConstant'HatinTime_HUD_Modding.Materials.ModMenuBackground_Green';
 	NewModMenu.WorkshopURL = "https://steamcommunity.com/workshop/filedetails/?id=2273080350";
 	NewModMenu.TabColor = MakeColor(40,255,40);
+
+	NewModMenu.GameMods.AddItem(dh);
 	for (i = 0; i < ModList.Length; i++)
 	{
 		if (!ModList[i].IsSubscribed) continue;
