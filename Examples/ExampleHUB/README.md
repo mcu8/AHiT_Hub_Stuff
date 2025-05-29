@@ -1,40 +1,55 @@
-/*
+# HUB Swapper – Template Map
 
-                    o + o    / ----------------------------- \    o + o
-                          O || Template map for HUB Swapper  || O 
-                    o + o    \ ----------------------------- /    o + o
-    
-    =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+A template map for **HUB Swapper** that lets you create your own hub map **without writing a single line of code**.
 
-     This allows you to create a map without the need to script anything!!!
-     YES, that mod has implemented "addon loader", unfortunelly, only one hub map can 
-     be loaded at once... (that's some engine limitation, I cannot do much about it...)
+> 💡 The mod supports an "addon loader", but due to engine limitations, **only one hub map can be loaded at a time**.
 
-    =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-     I.   BEFORE YOU START **PLEASE READ**
-    =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-     0. First, remove the steam version of the HUB Swapper
-     1. Download https://github.com/mcu8/AHiT_Hub_Stuff/tree/main/Releases/mcu8_mods_BH.zip
-        and extract the "mcu8_mods_BH" folder from the archive into your "Mods" folder
-     2. Launch Mod Manager, click on the "HUB Swapper" mod icon, then [</>] and 
-        click "Compile scripts" button, wait for it to finish...
+---
 
-     - That's it, you're ready to go! :> - 
+## ⚠️ Before You Start
 
-    =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-     II.  MAKING THE MAP
-    =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-     1. Create new mod in Modding Tools and launch the editor
-     2. Load my template map "hubexmap_ExampleHubMap.umap" in the editor
-     3. !!! DONT MODIFY IT !!! - save it as "hubexmap_<insert_some_random_name_here>.umap" 
-        (prefix is important!!! don't miss it!!!) to the "Maps" folder where your 
-        new mod is stored
-     4. Load that previously saved map - enjoy modding!
+Follow these steps to set everything up properly:
 
-    =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-     [!] Don't forget to add HUB Swapper as the dependency to your mod on the Steam Workshop!
-    =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+1. **Remove** the Steam version of HUB Swapper.
+2. **Download** [mcu8_mods_BH.zip](https://github.com/mcu8/AHiT_Hub_Stuff/tree/main/Releases/mcu8_mods_BH.zip).
+3. Extract the `mcu8_mods_BH` folder into your local `Mods` directory.
+4. Launch the **Mod Manager**, click the **HUB Swapper** mod icon, then click `[</>]` and press the **"Compile scripts"** button.
+5. Wait until the script compilation is complete.
+6. Click the **🚀 rocket icon**, press **"Cook Mod"**, and also wait for it to finish.
 
-                                         By m_cu8 @ https://hat.ovh | https://twitter.com/mcu82
+✅ You're now ready to start building your own map!
 
- */
+---
+
+## 🛠️ Creating Your Custom Map
+
+1. Create a **new mod** using the Modding Tools and open the editor.
+2. Load the provided template map:  
+   `hubexmap_ExampleHubMap.umap`
+3. **Do not modify** the original template. Instead, save it as:  
+   `hubexmap_<your_custom_name>.umap`  
+   *(Make sure to use the `hubexmap_` prefix!)*
+4. Save the new map into your mod’s `Maps` folder.
+5. Load your saved map — and enjoy modding!
+
+---
+
+## 📂 Optional: Notify Players About Missing HUB Swapper
+
+Inside the `Classes` folder, you'll find an **optional script** that displays a message to players if **HUB Swapper is not installed**.  
+It also suggests where to download it.
+
+If you'd like to use this feature, simply **copy the file(s)** from the provided `Classes` folder into your mod's own `Classes` directory.
+
+---
+
+## 📦 Steam Workshop Reminder
+
+> Don’t forget to **add HUB Swapper as a dependency** when uploading your mod to the Steam Workshop!
+
+---
+
+## 👤 Author
+
+Created by **[m_cu8](https://hat.ovh)**  
+🔵 [bsky.app/profile/m-cu.be](https://bsky.app/profile/m-cu.be)

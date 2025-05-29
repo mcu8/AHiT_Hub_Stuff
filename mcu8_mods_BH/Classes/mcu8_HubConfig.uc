@@ -22,6 +22,15 @@ function Save() {
     class'Engine'.static.BasicSaveObject(Self, ConfigPath, false, 1);
 }
 
+static function CreateConfigIfNeeded() {
+    local mcu8_HubConfig conf;
+    conf = new class'mcu8_HubConfig';
+    if (!class'Engine'.static.BasicLoadObject(conf, ConfigPath, false, 1)) {
+        // just save it lol
+        conf.Save();
+    }
+}
+
 defaultproperties 
 {
     LastMap = "mcu8_maps_bhtest"

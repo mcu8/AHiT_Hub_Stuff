@@ -1981,7 +1981,7 @@ function UpdatePreviewButtons(HUD H)
 {
 	local bool AllowPlay;
 
-	AllowPlay = PreviewMod.IsSubscribed && !PreviewMod.IsDownloading && ModMenuTabs[CurrentModMenuIndex].SpecialRenderingMode != 1;
+	AllowPlay = /* PreviewMod.IsSubscribed && !PreviewMod.IsDownloading  && */ ModMenuTabs[CurrentModMenuIndex].SpecialRenderingMode != 1;
 	if (ModMenuTabs[CurrentModMenuIndex].SpecialRenderingMode == 2)
 	{
 		AllowPlay = true;
@@ -1992,7 +1992,7 @@ function UpdatePreviewButtons(HUD H)
 	if (AllowPlay)
 	{
 		// If intro map present, needs to have played intro once
-		if (PreviewMod.IntroductionMap == "" || class'Hat_SaveBitHelper'.static.HasLevelBit("Mods_" $ PreviewMod.PackageName $ "_PlayedIntroOnce", 1, `GameManager.HubMapName))
+		/*if (PreviewMod.IntroductionMap == "" || class'Hat_SaveBitHelper'.static.HasLevelBit("Mods_" $ PreviewMod.PackageName $ "_PlayedIntroOnce", 1, `GameManager.HubMapName))
 		{
 			PreviewButtons.AddItem(LevelPreview_Play);
 		}
@@ -2000,7 +2000,8 @@ function UpdatePreviewButtons(HUD H)
 		if (PreviewMod.IntroductionMap != "")
 		{
 			PreviewButtons.AddItem(LevelPreview_PlayIntroduction);
-		}
+		}*/
+		PreviewButtons.AddItem(LevelPreview_Play);
 	}
 	else if (!AllowPlay && !PreviewMod.IsSubscribed && !PreviewMod.IsDownloading && PreviewMod.IsFeatured && ModMenuTabs[CurrentModMenuIndex].SpecialRenderingMode != 1)
 		PreviewButtons.AddItem(PreviewMod.IsMap ? LevelPreview_DownloadModMap : LevelPreview_DownloadMod);
@@ -2807,8 +2808,9 @@ function BuildModList_Levels(HUD H)
 	NewModMenu.GameMods.AddItem(dh);
 	for (i = 0; i < ModList.Length; i++)
 	{
-		if (!ModList[i].IsSubscribed) continue;
-		if (!ModList[i].IsMap) continue;
+		// fuck it, if it has map, then just use it, don't care lol
+		// if (!ModList[i].IsSubscribed) continue;
+		// if (!ModList[i].IsMap) continue; 
 		found = false;
 		foreach ModList[i].MapNames(_mapName) 
         {

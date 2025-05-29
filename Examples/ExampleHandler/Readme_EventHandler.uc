@@ -1,11 +1,11 @@
 /* 
-    Example event handler for Spaceship:EX
+    Example event handler for Hub Swapper
 
     ** THIS IS EXAMPLE CODE WHICH YOU SHOULD PUT INTO YOUR GAMEMOD CLASS **
 */
 
 // Hack method to cross-mod events
-// Spaceship:EX sends the "bhinitialized" event id when it's ready
+// Hub Swapper sends the "bhinitialized" event id when it's ready
 function OnMiniMissionGenericEvent(Object object, String id)
 {
   local String mapName;
@@ -18,5 +18,5 @@ function OnMiniMissionGenericEvent(Object object, String id)
 
 
 /*
-    By m_cu8 @ https://hat.ovh | https://twitter.com/mcu82
+    By m_cu8 @ https://hat.ovh | https://bsky.app/profile/m-cu.be
 */

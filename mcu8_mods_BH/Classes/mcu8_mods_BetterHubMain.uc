@@ -10,6 +10,8 @@ var config int TitlecardVerbose;
 var config int FastBoot;
 var config int IgnoreIcons;
 
+var GameModInfo DummyGMI;
+
 var() bool IsSwapperSpawned;
 
 const ModDebug = false; // TODO: set to "false" before release
@@ -27,6 +29,9 @@ event OnModLoaded()
 {
     local Array<Name> Maps;
     local string cuMap;
+
+    class'mcu8_HubConfig'.static.CreateConfigIfNeeded();
+
     cuMap = Locs(`GameManager.GetCurrentMapFilename());
 
     if (IsExHubMap(cuMap))
@@ -86,7 +91,7 @@ function RunHUBEvents()
 
     if (!HubEnabled()) return;
     i = GetCurrModInfo();
-    if (i.ModClass != None)
+    if (i.Name != default.DummyGMI.Name && i.ModClass != None)
     {
         Log("Calling OnPostLoadHUB...");
         mod = GetModByClass(class<GameMod>(i.ModClass));
@@ -363,6 +368,8 @@ static function GameModInfo GetCurrModInfo()
             }
         }
     }
+
+    return default.DummyGMI;
 }
 
 static function bool ShouldUseManholeInsteadTeleporter() {
@@ -423,4 +430,8 @@ defaultproperties {
     IsHubLoadingEnabled = 0
     FastBoot = 0
     IsSwapperSpawned = true
+
+    DummyGMI=(
+        Name='DummyModName_DoNotUse'
+    )
 }
