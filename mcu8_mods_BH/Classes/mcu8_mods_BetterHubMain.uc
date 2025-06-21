@@ -21,7 +21,29 @@ var bool EnableLoadingMusicCompatLayer;
 
 static function name GetEntryMap()
 {
+    local GameModInfo currentModInfo;
+    currentModInfo = GetCurrModInfo();
+    if (currentModInfo.IntroductionMap != "" && !class'Hat_SaveBitHelper'.static.HasLevelBit("Mods_" $ currentModInfo.PackageName $ "." $ currentModInfo.IntroductionMap $ "_PlayedIntroOnce", 1, `GameManager.HubMapName)) {     
+        return name(currentModInfo.IntroductionMap);
+    }
     return name(GetHubMapName());
+}
+
+function FixLevelIntroFlag() {
+    local GameModInfo currentModInfo;
+    local WorldInfo w;
+
+    // just for safety, don't apply bit for PIE
+    if (class'Engine'.static.IsEditor()) return;
+	w = class'WorldInfo'.static.GetWorldInfo();
+	if (w != None && (w.IsPlayInEditor() || w.IsPlayInPreview())) return;
+	
+    currentModInfo = GetCurrModInfo();
+    if (`GameManager.GetCurrentMapFilename() ~= currentModInfo.IntroductionMap) {
+        class'Hat_SaveBitHelper'.static.AddLevelBit("Mods_" $ currentModInfo.PackageName $ "." $ currentModInfo.IntroductionMap $ "_PlayedIntroOnce", 1, `GameManager.HubMapName);
+        if (currentModInfo.PackageName != "")
+            class'GameMod'.static.SetActiveLevelMod(currentModInfo.PackageName);
+    }
 }
 
 // Replace hub_spaceship map when it's loaded
@@ -31,6 +53,8 @@ event OnModLoaded()
     local string cuMap;
 
     class'mcu8_HubConfig'.static.CreateConfigIfNeeded();
+
+    FixLevelIntroFlag();
 
     cuMap = Locs(`GameManager.GetCurrentMapFilename());
 

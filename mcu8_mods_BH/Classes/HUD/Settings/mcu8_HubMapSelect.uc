@@ -2085,9 +2085,16 @@ function LoadMap(HUD H)
 	cfg.LastMap = `GameManager.HubMapName ~= MapName ? "" : MapName;
 	cfg.Save();
 
-	`GameManager.SoftChangeLevel(MapName);
-	if (PreviewMod.PackageName != "")
-		class'GameMod'.static.SetActiveLevelMod(PreviewMod.PackageName);
+	if (PreviewMod.IntroductionMap != "" && !class'Hat_SaveBitHelper'.static.HasLevelBit("Mods_" $ PreviewMod.PackageName $ "." $ PreviewMod.IntroductionMap $ "_PlayedIntroOnce", 1, `GameManager.HubMapName)) {
+		if (PreviewMod.PackageName != "")
+			class'GameMod'.static.SetActiveLevelMod(PreviewMod.IntroductionMap);
+		class'Hat_SaveBitHelper'.static.AddLevelBit("Mods_" $ PreviewMod.PackageName $ "." $ PreviewMod.IntroductionMap $ "_PlayedIntroOnce", 1, `GameManager.HubMapName);
+		`GameManager.SoftChangeLevel(PreviewMod.IntroductionMap);
+	}
+	else 
+	{
+		`GameManager.SoftChangeLevel(MapName);
+	}
 }
 
 delegate OnCloseConfigMenu(HUD H, Hat_HUDElement e)
